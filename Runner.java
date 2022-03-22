@@ -24,7 +24,7 @@ public class Runner {
                 // File outfile = new File()
                 Scanner infileReader = new Scanner(infile);
                 while (infileReader.hasNextLine()) {
-                    String inp = infileReader.nextLine();
+                    String inp = infileReader.next();
                     Lexer.Pair pair = lexer.lex(inp);
                     System.out.println("(" + pair.getToken() + ", " + pair.getLexeme() + ")");
                 }

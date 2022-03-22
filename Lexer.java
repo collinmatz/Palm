@@ -46,7 +46,7 @@ public class Lexer {
     //keywords that are reserved by the language, cannot be used as IDs    
     String KEYWORDS[] = {"print", "get", "if", "then", "else", "end", "while", "do", "and", "or", "not"};
 
-    int LINE = 1; // keep track of the current input line file
+    int LINE = 0; // keep track of the current input line file
     
 
     public Lexer() {}
@@ -150,7 +150,7 @@ public class Lexer {
 
 
     public Pair<?> lex(String input) {
-
+        nextLine();
         int i = 0;
         while (i < input.length() && (input.charAt(i) == ' ' || input.charAt(i) == '/')) {
             i++;
@@ -265,6 +265,10 @@ public class Lexer {
 
         else if (input.charAt(i) == '_' || Character.isAlphabetic(input.charAt(i))) {
             return keyword_or_id(input.substring(i));
+        }
+
+        else if (Character.isDigit(input.charAt(i))) {
+            return lex_int(input.substring(i), 1);
         }
 
         else if (input.charAt(i) == '\n') {
