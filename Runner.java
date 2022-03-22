@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.Scanner;
+import java.util.regex.*;
 
 /* Class: Runner
    a runner to test the lexer
@@ -17,18 +18,20 @@ public class Runner {
 
         while(true) {
             System.out.print(">>> ");
-            String filename = scanner.nextLine();
+            String infilename = scanner.nextLine();
             try {
-                File file = new File(filename);
-                Scanner fileReader = new Scanner(file);
-                while (fileReader.hasNext()) {
-                    String data = fileReader.next();
-                    System.out.print(data);
+                File infile = new File(infilename);
+                // File outfile = new File()
+                Scanner infileReader = new Scanner(infile);
+                while (infileReader.hasNextLine()) {
+                    String inp = infileReader.nextLine();
+                    Lexer.Pair pair = lexer.lex(inp);
+                    System.out.println("(" + pair.getToken() + ", " + pair.getLexeme() + ")");
                 }
-                fileReader.close();
+                infileReader.close();
             }
             catch (Exception e) {
-                System.out.println(e);
+                System.out.println("Cannot find the specified file, " + e);
             }
         }
     }

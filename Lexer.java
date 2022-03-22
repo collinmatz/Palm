@@ -4,7 +4,7 @@ public class Lexer {
        
        private class to store token / lexeme objects
     */
-    private class Pair<t> {
+    public class Pair<t> {
         int token;
         t lexeme;
         public Pair(int tok, t lex) {
@@ -39,8 +39,9 @@ public class Lexer {
         KEYWORD = 17,
         NEWLINE = 18,
         TAB = 19,
-        END_OF_INPUT = 20,
-        ERROR = 21;
+        ASSIGN = 20,
+        END_OF_INPUT = 21,
+        ERROR = 22;
 
     //keywords that are reserved by the language, cannot be used as IDs    
     String KEYWORDS[] = {"print", "get", "if", "then", "else", "end", "while", "do", "and", "or", "not"};
@@ -61,7 +62,7 @@ public class Lexer {
     public Pair<String> lookup(String lexeme) {
         Pair<String> pair = new Pair<String>();
         for (int i = 0; i < KEYWORDS.length; i++) {
-            if (lexeme == KEYWORDS[i]) {
+            if (lexeme.equals(KEYWORDS[i])) {
                 pair.setToken(KEYWORD);
                 pair.setLexeme(lexeme);
                 return pair;
@@ -91,7 +92,7 @@ public class Lexer {
 
        returns an INT token along with its associated integer
     */
-    public Pair<Integer> lex_int(String input, char sign) {
+    public Pair<Integer> lex_int(String input, int sign) {
         int i = 0;
         String number = "";
         while (i < input.length() && Character.isDigit(input.charAt(i)))
@@ -149,24 +150,132 @@ public class Lexer {
 
 
     public Pair<?> lex(String input) {
+
         int i = 0;
         while (i < input.length() && (input.charAt(i) == ' ' || input.charAt(i) == '/')) {
             i++;
         }
-        if (i >= input.length()) {
-            Pair<String> pair = new Pair<String>(END_OF_INPUT, null);
-            return pair;
-        }
+
+        if (i >= input.length())
+            return new Pair<String>(END_OF_INPUT, null);
+        
         if (input.charAt(i) == '+') {
-            if (i + 1 < input.length()) {
-
+            i++;
+            if (i < input.length()) {
+                if (Character.isDigit(input.charAt(i)))
+                    return lex_int(input.substring(i), 1);
+                else
+                    return new Pair<String>(PLUS, "+");
             }
-            else {
-                Pair<String> pair = new Pair<String>(ERROR, "Unexpected character '" + input.charAt(i) + "'" + " on line " + LINE);
-                return pair;
-            }
-
+            else
+                return error("Unexpected character");
         }
+
+        else if (input.charAt(i) == '-') {
+            i++;
+            if (i < input.length()) {
+                if (Character.isDigit(input.charAt(i)))
+                    return lex_int(input.substring(i), -1);
+                else
+                    return new Pair<String>(MINUS, "-");
+            }
+            else
+                return error("Unexpected character");
+        }
+
+        else if (input.charAt(i) == '*') {
+            i++;
+            if (i < input.length())
+                return new Pair<String>(MULTI, "*");
+            else
+                return error("Unexpected character");
+        }
+
+        else if (input.charAt(i) == '/') {
+            i++;
+            if (i < input.length())
+                return new Pair<String>(DIVIDE, "/");
+            else
+                return error("Unexpected character");
+        }
+
+        else if (input.charAt(i) == '%') {
+            i++;
+            if (i < input.length())
+                return new Pair<String>(MODULO, "%");
+            else
+                return error("Unexpected character");
+        }
+
+        else if (input.charAt(i) == '<') {
+            i++;
+            if (i < input.length()) {
+                if (input.charAt(i) == '=')
+                    return new Pair<String>(LTE, "<=");
+                else
+                    return new Pair<String>(LT, "<");
+            }
+            else
+                return error("Unexpected character");
+        }
+
+        else if (input.charAt(i) == '>') {
+            i++;
+            if (i < input.length()) {
+                if (input.charAt(i) == '=')
+                    return new Pair<String>(GTE, ">=");
+                else
+                    return new Pair<String>(GT, ">");
+            }
+            else
+                return error("Unexpected character");
+        }
+
+        else if (input.charAt(i) == '=') {
+            i++;
+            if (i < input.length()) {
+                if (input.charAt(i) == '=')
+                    return new Pair<String>(EQU, "==");
+                else
+                    return new Pair<String>(ASSIGN, "=");
+            }
+            else
+                return error("Unexpected character");
+        }
+
+        else if (input.charAt(i) == '(') {
+            i++;
+            if (i < input.length())
+                return new Pair<String>(OPENPAR, "(");
+            else
+                return error("Unexpected character");
+        }
+
+        else if (input.charAt(i) == ')') {
+            i++;
+            if (i < input.length())
+                return new Pair<String>(CLOSEPAR, ")");
+            else
+                return error("Unexpected character");
+        }
+
+        else if (input.charAt(i) == ';') {
+            return new Pair<String>(SEMICOLON, ";");
+        }
+
+        else if (input.charAt(i) == '_' || Character.isAlphabetic(input.charAt(i))) {
+            return keyword_or_id(input.substring(i));
+        }
+
+        else if (input.charAt(i) == '\n') {
+            nextLine();
+            return new Pair<String>(NEWLINE, "\\n");
+        }
+
+        else if (input.charAt(i) == '\t') {
+            return new Pair<String>(TAB, "\\t");
+        }
+
         return null; // can remove once every return statement has been added
     }
 }
