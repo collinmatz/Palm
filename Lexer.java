@@ -44,7 +44,7 @@ public class Lexer {
         ERROR = 22;
 
     //keywords that are reserved by the language, cannot be used as IDs    
-    String KEYWORDS[] = {"print", "get", "if", "then", "else", "end", "while", "do", "and", "or", "not"};
+    String KEYWORDS[] = {"print", "get", "if", "then", "else", "end", "while", "do", "and", "or", "not", "for"};
 
     int LINE = 0; // keep track of the current input line file
     
