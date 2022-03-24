@@ -6,7 +6,6 @@ import java.util.Scanner;
 */
 
 // TODO: Implement file type checking
-// TODO: Implement file output
 
 public class Runner {
     public static void main(String args[]) {
