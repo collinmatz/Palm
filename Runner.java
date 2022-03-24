@@ -5,38 +5,39 @@ import java.util.Scanner;
    a runner to test the lexer
 */
 
-// TODO: Implement file type checking
-
 public class Runner {
     public static void main(String args[]) {
         Lexer lexer = new Lexer();
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to Palm! Type the pathname of the file you want to interpret. Type 'quit' to terminate.");
 
         while(true) {
             System.out.print(">>> ");
-            String infilename = scanner.nextLine();
+            String input = scanner.nextLine();
+            if (input.equals("quit"))
+                break;
             try {
-                File infile = new File(infilename);
-                File outfile = new File(infilename + ".palm");
-                if (!outfile.createNewFile()) {
-                    if (!outfile.delete()) {
-                        System.out.println("Error when attempting to create output file");
-                        break;
-                    }
-                }
+                File infile = new File(input);
+                File outfile = new File(input + ".palm");
                 // File outfile = new File()
                 Scanner infileReader = new Scanner(infile);
                 FileWriter outfileWriter = new FileWriter(outfile);
-                while (infileReader.hasNextLine()) {
-                    String inp = infileReader.nextLine();
+                while (infileReader.hasNext()) {
+                    String inp = infileReader.next();
                     Lexer.Pair<?> pair = lexer.lex(inp);
-                    outfileWriter.write("(" + pair.getToken() + ", " + pair.getLexeme() + ")\n");
+                    try {
+                        outfileWriter.write("(" + pair.getToken() + ", " + pair.getLexeme() + ")\n");
+                    }
+                    catch (Exception e){
+                        System.out.println(e);
+                    }
+                    
                 }
                 infileReader.close();
                 outfileWriter.close();
             }
             catch (Exception e) {
-                System.out.println("Cannot find the specified file, " + e);
+                System.out.println("Error when attempting to execute: " + e);
             }
         }
         scanner.close();
