@@ -18,3 +18,5 @@ OUTPUT: test2.palm
 
 Notes:
 Currently, only test2 and test4 are partially working. Modifications need to be made to fix for-loop-test and test3.
+
+IMPORTANT: Different versions of java will not be able to recompile the program if the class files are outdated. To ensure this problem doesn't arise, delete all the compiled class files before you push to the repo.
