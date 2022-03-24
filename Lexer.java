@@ -164,11 +164,8 @@ public class Lexer {
             if (i < input.length()) {
                 if (Character.isDigit(input.charAt(i)))
                     return lex_int(input.substring(i), 1);
-                else
-                    return new Pair<String>(PLUS, "+");
             }
-            else
-                return error("Unexpected character");
+            return new Pair<String>(PLUS, "+");
         }
 
         else if (input.charAt(i) == '-') {
@@ -176,35 +173,26 @@ public class Lexer {
             if (i < input.length()) {
                 if (Character.isDigit(input.charAt(i)))
                     return lex_int(input.substring(i), -1);
-                else
-                    return new Pair<String>(MINUS, "-");
             }
-            else
-                return error("Unexpected character");
+            return new Pair<String>(MINUS, "-");
         }
 
         else if (input.charAt(i) == '*') {
-            i++;
-            if (i < input.length())
-                return new Pair<String>(MULTI, "*");
-            else
-                return error("Unexpected character");
+            return new Pair<String>(MULTI, "*");
         }
 
         else if (input.charAt(i) == '/') {
             i++;
-            if (i < input.length())
-                return new Pair<String>(DIVIDE, "/");
-            else
-                return error("Unexpected character");
+            if (i < input.length()) {
+                if (input.charAt(i) == '/')
+                    while (i < input.length())
+                        i++;
+            }
+            return new Pair<String>(DIVIDE, "/");
         }
 
         else if (input.charAt(i) == '%') {
-            i++;
-            if (i < input.length())
-                return new Pair<String>(MODULO, "%");
-            else
-                return error("Unexpected character");
+            return new Pair<String>(MODULO, "%");
         }
 
         else if (input.charAt(i) == '<') {
@@ -212,11 +200,8 @@ public class Lexer {
             if (i < input.length()) {
                 if (input.charAt(i) == '=')
                     return new Pair<String>(LTE, "<=");
-                else
-                    return new Pair<String>(LT, "<");
             }
-            else
-                return error("Unexpected character");
+            return new Pair<String>(LT, "<");
         }
 
         else if (input.charAt(i) == '>') {
@@ -224,11 +209,8 @@ public class Lexer {
             if (i < input.length()) {
                 if (input.charAt(i) == '=')
                     return new Pair<String>(GTE, ">=");
-                else
-                    return new Pair<String>(GT, ">");
             }
-            else
-                return error("Unexpected character");
+            return new Pair<String>(GT, ">");
         }
 
         else if (input.charAt(i) == '=') {
@@ -236,27 +218,16 @@ public class Lexer {
             if (i < input.length()) {
                 if (input.charAt(i) == '=')
                     return new Pair<String>(EQU, "==");
-                else
-                    return new Pair<String>(ASSIGN, "=");
             }
-            else
-                return error("Unexpected character");
+            return new Pair<String>(ASSIGN, "=");
         }
 
         else if (input.charAt(i) == '(') {
-            i++;
-            if (i < input.length())
-                return new Pair<String>(OPENPAR, "(");
-            else
-                return error("Unexpected character");
+            return new Pair<String>(OPENPAR, "(");
         }
 
         else if (input.charAt(i) == ')') {
-            i++;
-            if (i < input.length())
-                return new Pair<String>(CLOSEPAR, ")");
-            else
-                return error("Unexpected character");
+            return new Pair<String>(CLOSEPAR, ")");
         }
 
         else if (input.charAt(i) == ';') {
@@ -271,15 +242,15 @@ public class Lexer {
             return lex_int(input.substring(i), 1);
         }
 
+        else if (input.charAt(i) == '"') {
+            return lex_string(input.substring(i));
+        }
+
         else if (input.charAt(i) == '\n') {
             nextLine();
             return new Pair<String>(NEWLINE, "\\n");
         }
 
-        else if (input.charAt(i) == '\t') {
-            return new Pair<String>(TAB, "\\t");
-        }
-
-        return null; // can remove once every return statement has been added
+        return error("Unexpected Character");
     }
 }
