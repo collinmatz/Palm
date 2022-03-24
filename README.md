@@ -7,15 +7,14 @@ Runner.class      |  Class file for Runner
 Runner.java       |  Source file for the Runner code
 
 How to compile:
-From the base directory, run "javac Runner.java" to compile. After compilation, run the
-program with "java Runner"
+From the base directory, run "javac Runner.java" to compile
+
+How to run:
+After compilation, run the runner file with "java Runner". You can then type the pathname of your file into the terminal and its tokens will be output to a file titled {inputfile name}.palm in the base directory.
+
+Example: 
+INPUT: ./Test Programs/test2
+OUTPUT: test2.palm
 
 Notes:
-To convert a program into tokens, type the relative pathname of the file into the prompt
-
-Example.)
-
->>> ./Test Programs/test2.prog
-
-After you successfully interpret the file, a "filename".palm file will be generated that will
-contain the tokens from the input file
+Currently, only test2 and test4 are partially working. Modifications need to be made to fix for-loop-test and test3.
