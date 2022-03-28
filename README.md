@@ -7,16 +7,23 @@ Runner.class      |  Class file for Runner
 Runner.java       |  Source file for the Runner code
 
 How to compile:
-From the base directory, run "javac Runner.java" to compile
+From the base directory, type "javac Runner.java" to compile
 
 How to run:
-After compilation, run the runner file with "java Runner". You can then type the pathname of your file into the terminal and its tokens will be output to a file titled {inputfile name}.palm in the base directory.
+After compilation, run the runner file with "java Runner -options". Currently, there are two supported options, t and f.
+    -t: run the program in terminal mode. The tokens will be printed to the command line
+    -f: run the program in fild mode. The tokens will be printed to an output file
 
-Example: 
-INPUT: ./Test Programs/test2
+Example of Compilation and Run:
+INPUT: 
+>>> javac Runner.java
+>>> java Runner -f
+>>> ./Test Programs/test2
 OUTPUT: test2.palm
 
-Notes:
-Currently, only test2 and test4 are partially working. Modifications need to be made to fix for-loop-test and test3.
+Note: Regardless of what mode you run the program in, the tokens must be read from an input file. Running the program in terminal mode will not allow you to type strings into the command line and have their tokens returned to you.
 
 IMPORTANT: Different versions of java will not be able to recompile the program if the class files are outdated. To ensure this problem doesn't arise, delete all the compiled class files before you push to the repo.
+
+
+

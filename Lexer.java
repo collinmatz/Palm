@@ -1,7 +1,6 @@
 public class Lexer {
 
     /* Pair
-       
        private class to store token / lexeme objects
     */
     public class Pair<t> {
@@ -96,7 +95,10 @@ public class Lexer {
         int i = 0;
         String number = "";
         while (i < input.length() && Character.isDigit(input.charAt(i)))
+        {
             number += input.charAt(i);
+            i++;
+        }
         int integer = Integer.parseInt(number) * sign;
         Pair<Integer> pair = new Pair<Integer>(INT, integer);
         return pair;
@@ -121,7 +123,7 @@ public class Lexer {
 
     /* lex_string
        input: (String) input
-       returns: (Pair) STRING/string
+       returns: (Pair) string/string
 
        turns any input between two paranthesese into a STRING token
     */
@@ -149,10 +151,16 @@ public class Lexer {
     }
 
 
+    /* lex
+       input: (String) input
+       returns: (Pair) string/string
+
+       turns any input between two paranthesese into a STRING token
+    */
     public Pair<?> lex(String input) {
         nextLine();
         int i = 0;
-        while (i < input.length() && (input.charAt(i) == ' ' || input.charAt(i) == '/')) {
+        while (i < input.length() && (input.charAt(i) == ' ')) {
             i++;
         }
 
@@ -220,6 +228,15 @@ public class Lexer {
                     return new Pair<String>(EQU, "==");
             }
             return new Pair<String>(ASSIGN, "=");
+        }
+
+        else if (input.charAt(i) == '!') {
+            i++;
+            if (i < input.length()) {
+                if (input.charAt(i) == '=')
+                    return new Pair<String> (NEQU, "!=");
+            }
+            return error("Unexcpeted Character");
         }
 
         else if (input.charAt(i) == '(') {
